@@ -132,6 +132,18 @@ h1 {
   animation: reveal 1.4s 3.1s cubic-bezier(.2,.7,.2,1) forwards;
 }
 
+h1 span {
+  display: block;
+  max-width: 11.5em;
+  margin-top: .28em;
+  font-family: "Segoe UI", sans-serif;
+  font-size: .3em;
+  font-weight: 350;
+  line-height: 1.42;
+  letter-spacing: .01em;
+  color: #d3cce5;
+}
+
 .replay {
   margin-top: 28px;
   padding: 12px 19px 13px;
