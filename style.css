@@ -1,0 +1,336 @@
+:root {
+  --night: #080d20;
+  --night-soft: #101936;
+  --lavender: #9474e8;
+  --lavender-light: #c5aeff;
+  --hydrangea: #779bda;
+  --leaf: #4e896e;
+  --leaf-dark: #285c50;
+  --ink: #f3eefc;
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; min-height: 100%; background: var(--night); }
+
+body {
+  overflow: hidden;
+  color: var(--ink);
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+::selection { background: rgba(173, 153, 225, .35); color: #fff; }
+
+button { font: inherit; }
+
+.garden {
+  position: relative;
+  isolation: isolate;
+  min-height: 100svh;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 72% 14%, rgba(125, 146, 209, .18), transparent 28%),
+    radial-gradient(ellipse at 42% 90%, rgba(42, 91, 86, .22), transparent 48%),
+    linear-gradient(165deg, #121a39 0%, var(--night) 58%, #07131c 100%);
+}
+
+.garden::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 45%, rgba(2, 5, 15, .48) 100%);
+}
+
+.aurora {
+  position: absolute;
+  z-index: 0;
+  inset: -20% -10% 30%;
+  opacity: .22;
+  filter: blur(70px);
+  background:
+    radial-gradient(ellipse at 20% 60%, rgba(84, 132, 124, .5), transparent 42%),
+    radial-gradient(ellipse at 72% 30%, rgba(105, 93, 164, .42), transparent 40%);
+  transform: translate3d(calc(var(--mx, 0) * -12px), calc(var(--my, 0) * -8px), 0);
+  transition: transform 1.2s cubic-bezier(.2,.7,.2,1);
+}
+
+.moon {
+  position: absolute;
+  top: 8vh;
+  right: 10vw;
+  width: clamp(72px, 9vw, 132px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #e8e7db;
+  box-shadow: 0 0 30px rgba(225, 228, 241, .34), 0 0 90px rgba(177, 190, 239, .2);
+  opacity: 0;
+  animation: moonrise 2.4s .3s ease-out forwards;
+  transform: translate3d(calc(var(--mx, 0) * 8px), calc(var(--my, 0) * 6px), 0);
+}
+
+.moon::after {
+  content: "";
+  position: absolute;
+  width: 100%; height: 100%;
+  border-radius: inherit;
+  translate: 24% -10%;
+  background: #101936;
+}
+
+.stars { position: absolute; inset: 0; opacity: .65; }
+.star {
+  position: absolute;
+  width: 2px; height: 2px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 6px #b8c7ff;
+  animation: twinkle var(--speed) ease-in-out var(--wait) infinite alternate;
+}
+
+.firefly {
+  position: absolute;
+  left: var(--x); top: var(--y);
+  width: 3px; height: 3px;
+  border-radius: 50%;
+  background: #dcefa8;
+  box-shadow: 0 0 6px 2px rgba(210, 235, 150, .28);
+  opacity: 0;
+  animation: firefly var(--flight) var(--wait) ease-in-out infinite;
+}
+
+.message {
+  position: relative;
+  z-index: 6;
+  width: min(570px, 84vw);
+  padding: clamp(56px, 10vh, 120px) 0 0 clamp(24px, 8vw, 130px);
+  transform: translate3d(calc(var(--mx, 0) * -3px), calc(var(--my, 0) * -2px), 0);
+  transition: transform 1s cubic-bezier(.2,.7,.2,1);
+}
+
+.kicker {
+  margin: 0 0 14px;
+  color: #bcb5d4;
+  font-family: "Segoe UI", sans-serif;
+  font-size: clamp(.68rem, 1vw, .8rem);
+  letter-spacing: .12em;
+  opacity: 0;
+  animation: reveal 1s 2.8s forwards;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2.25rem, 5.6vw, 5.8rem);
+  font-weight: 400;
+  line-height: .98;
+  letter-spacing: -.045em;
+  text-wrap: balance;
+  text-shadow: 0 3px 30px rgba(0, 0, 0, .28);
+  opacity: 0;
+  transform: translateY(18px);
+  animation: reveal 1.4s 3.1s cubic-bezier(.2,.7,.2,1) forwards;
+}
+
+.replay {
+  margin-top: 28px;
+  padding: 12px 19px 13px;
+  border: 1px solid rgba(222, 215, 242, .44);
+  border-radius: 999px;
+  color: #f3eefc;
+  background: rgba(20, 27, 57, .46);
+  box-shadow: inset 0 1px rgba(255,255,255,.11), 0 8px 30px rgba(3, 7, 20, .2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  cursor: pointer;
+  font-family: "Segoe UI", sans-serif;
+  font-size: .8rem;
+  opacity: 0;
+  animation: reveal 1s 4s forwards;
+}
+.replay span { display: block; transition: transform .2s ease; }
+.replay:hover { color: #fff; border-color: rgba(255,255,255,.8); background: rgba(38, 45, 82, .62); }
+.replay:active span { transform: translateY(1px) scale(.98); }
+.replay:focus-visible { outline: 2px solid #cbb8ff; outline-offset: 6px; }
+
+.scene {
+  position: absolute; inset: auto 0 0; height: 76vh; z-index: 2;
+  transform: translate3d(calc(var(--mx, 0) * 5px), calc(var(--my, 0) * 3px), 0);
+  transition: transform 1.3s cubic-bezier(.2,.7,.2,1);
+}
+.ground {
+  position: absolute;
+  z-index: 3;
+  left: -10%; right: -10%; bottom: -10vh;
+  height: 24vh;
+  border-radius: 50% 50% 0 0;
+  background:
+    radial-gradient(ellipse at 52% 0%, rgba(45, 94, 78, .36), transparent 30%),
+    linear-gradient(#0c2527, #061317);
+  filter: blur(2px);
+}
+
+.mist {
+  position: absolute;
+  z-index: 4;
+  left: -20%; right: -20%; bottom: -2vh;
+  height: 18vh;
+  opacity: .22;
+  filter: blur(18px);
+  background: radial-gradient(ellipse at center, rgba(118, 151, 159, .38), transparent 62%);
+  animation: mist-drift 11s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+.lavender {
+  position: absolute;
+  bottom: 5vh;
+  left: var(--x);
+  width: 10px;
+  height: var(--h);
+  transform-origin: 50% 100%;
+  transform: rotate(var(--lean)) scaleY(0);
+  animation: grow-stem 1.6s var(--delay) cubic-bezier(.2,.8,.2,1) forwards,
+             sway var(--sway) calc(var(--delay) + 1.6s) ease-in-out infinite alternate;
+}
+
+.lavender__stem {
+  position: absolute;
+  bottom: 0; left: 4px;
+  width: 2px; height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(to top, var(--leaf-dark), #65a080);
+}
+
+.lavender__sprig { position: absolute; top: 0; left: 50%; width: 1px; height: 42%; }
+.bud {
+  position: absolute;
+  left: calc(var(--side) * 1px);
+  top: var(--y);
+  width: var(--size); height: calc(var(--size) * .62);
+  border-radius: 70% 30% 65% 35%;
+  background: linear-gradient(135deg, var(--lavender-light), var(--lavender) 55%, #6048b0);
+  box-shadow: inset 1px 1px rgba(255,255,255,.24), 0 0 8px rgba(163, 128, 236, .35);
+  transform: translateX(-50%) rotate(calc(var(--side) * 2deg)) scale(0);
+  animation: bud-open .55s calc(var(--delay) + var(--bud-delay)) ease-out forwards;
+}
+
+.lavender__leaf {
+  position: absolute;
+  bottom: var(--ly);
+  left: 4px;
+  width: 34px; height: 7px;
+  border-radius: 100% 0 100% 0;
+  background: linear-gradient(90deg, #427867, #6aa086);
+  transform-origin: left center;
+  transform: rotate(var(--lr)) scaleX(0);
+  animation: leaf-open .7s calc(var(--delay) + .8s) ease-out forwards;
+}
+
+.hydrangea {
+  position: absolute;
+  bottom: 2vh;
+  left: var(--x);
+  width: clamp(160px, 20vw, 290px);
+  height: clamp(310px, 46vh, 520px);
+  transform-origin: 50% 100%;
+  animation: gentle-sway 5s ease-in-out 3s infinite alternate;
+}
+.hydrangea__stem {
+  position: absolute; bottom: 0; left: 50%;
+  width: 6px; height: 72%;
+  border-radius: 50%;
+  background: linear-gradient(90deg, #244e47, #639379, #2f6557);
+  transform-origin: bottom;
+  transform: scaleY(0);
+  animation: grow-stem 1.7s var(--delay) ease-out forwards;
+}
+.hydrangea__head {
+  position: absolute; left: 50%; top: 0;
+  width: 100%; aspect-ratio: 1.18;
+  transform: translateX(-50%) scale(0);
+  opacity: 0;
+  animation: cluster-open 1.5s calc(var(--delay) + 1.05s) cubic-bezier(.16,.8,.25,1.15) forwards;
+}
+.hydrangea__head::before {
+  content: "";
+  position: absolute; inset: 11% 8% 13%;
+  border-radius: 48%;
+  opacity: .62;
+  background: radial-gradient(circle at 38% 30%, rgba(196, 207, 247, .48), rgba(64, 82, 143, .5) 68%, transparent 72%);
+  filter: blur(9px);
+}
+.floret {
+  position: absolute;
+  left: var(--fx); top: var(--fy);
+  width: var(--fs); aspect-ratio: 1;
+  transform: rotate(var(--fr)) scale(0);
+  animation: floret-open .7s calc(var(--delay) + 1.2s + var(--fd)) ease-out forwards;
+}
+.floret::before, .floret::after {
+  content: ""; position: absolute; inset: 23%;
+  border-radius: 65% 35% 65% 35%;
+  background: linear-gradient(145deg, color-mix(in srgb, var(--fc), white 18%), var(--fc) 68%, color-mix(in srgb, var(--fc), #1e2a62 18%));
+  box-shadow: inset 1px 1px rgba(255,255,255,.25), 0 0 7px rgba(143, 176, 229, .22);
+}
+.floret::before { transform: translateY(-35%) rotate(45deg); }
+.floret::after { transform: translateY(35%) rotate(225deg); }
+.floret i::before, .floret i::after {
+  content: ""; position: absolute; inset: 23%;
+  border-radius: 65% 35% 65% 35%;
+  background: linear-gradient(145deg, color-mix(in srgb, var(--fc), white 18%), var(--fc) 68%, color-mix(in srgb, var(--fc), #1e2a62 18%));
+}
+.floret i::before { transform: translateX(-35%) rotate(-45deg); }
+.floret i::after { transform: translateX(35%) rotate(135deg); }
+.floret i { position: absolute; inset: 0; }
+.floret i span { position: absolute; z-index: 2; left: 48%; top: 48%; width: 3px; height: 3px; border-radius: 50%; background: #e8d9bd; }
+
+.leaf {
+  position: absolute;
+  bottom: 22%; left: 50%;
+  width: 42%; aspect-ratio: 1.45;
+  border-radius: 80% 12% 75% 15%;
+  background: linear-gradient(145deg, #568b6d, #27554c);
+  transform-origin: 0 50%;
+  transform: rotate(-25deg) scale(0);
+  animation: leaf-open .9s calc(var(--delay) + 1s) ease-out forwards;
+}
+.leaf::after { content:""; position:absolute; left:5%; top:50%; width:88%; height:1px; background:rgba(190,220,190,.25); transform:rotate(-8deg); }
+.leaf--b { bottom: 38%; transform: rotate(205deg) scale(0); animation-name: leaf-open-b; }
+
+@keyframes moonrise { to { opacity: .78; transform: translateY(0); } }
+@keyframes reveal { to { opacity: 1; transform: translateY(0); } }
+@keyframes twinkle { to { opacity: .18; transform: scale(.6); } }
+@keyframes grow-stem { to { transform: rotate(var(--lean, 0deg)) scaleY(1); } }
+@keyframes bud-open { 75% { transform: translateX(-50%) rotate(calc(var(--side) * 2deg)) scale(1.18); } to { transform: translateX(-50%) rotate(calc(var(--side) * 2deg)) scale(1); } }
+@keyframes leaf-open { to { transform: rotate(-25deg) scale(1); } }
+@keyframes leaf-open-b { to { transform: rotate(205deg) scale(1); } }
+@keyframes cluster-open { to { opacity: 1; transform: translateX(-50%) scale(1); } }
+@keyframes floret-open { to { transform: rotate(var(--fr)) scale(1); } }
+@keyframes sway { from { rotate: -1deg; } to { rotate: 2deg; } }
+@keyframes gentle-sway { from { rotate: -.7deg; } to { rotate: 1.2deg; } }
+@keyframes firefly {
+  0%, 100% { opacity: 0; transform: translate(0, 8px) scale(.6); }
+  22% { opacity: .78; }
+  52% { opacity: .2; transform: translate(14px, -13px) scale(1); }
+  78% { opacity: .62; }
+}
+@keyframes mist-drift { to { transform: translateX(5%) scaleX(1.08); opacity: .3; } }
+
+@media (max-width: 700px) {
+  .message { width: 100%; padding: 8vh 24px 0; text-align: center; }
+  h1 { font-size: clamp(2.4rem, 12vw, 4rem); }
+  .scene { height: 62vh; opacity: .94; }
+  .hydrangea--left { --x: -10% !important; }
+  .hydrangea--right { --x: 63% !important; }
+  .moon { right: 4vw; top: 4vh; }
+}
+
+@supports not (color: color-mix(in srgb, white, black)) {
+  .floret::before, .floret::after, .floret i::before, .floret i::after { background: var(--fc); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-delay: 0ms !important; animation-iteration-count: 1 !important; }
+}
+
